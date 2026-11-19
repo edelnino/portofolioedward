@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edward Daniel — Level 21 Full-Stack & Product Developer (Game Portfolio)</title>
+  <meta name="description" content="Interactive Game-Themed Portfolio of Edward Daniel - Software Engineer & Product Developer specializing in Web, Mobile, AI, and UI/UX Design.">
+  
+  <!-- Fonts: Plus Jakarta Sans for crisp readability + Press Start 2P & Silkscreen for Retro Gaming Vibe -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Silkscreen:wght@400;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+            pixel: ['"Silkscreen"', 'monospace'],
+          },
+          colors: {
+            neon: {
+              green: '#10b981',
+              cyan: '#06b6d4',
+              purple: '#8b5cf6',
+              amber: '#f59e0b',
+              pink: '#ec4899',
+            },
+            game: {
+              bg: '#08080c',
+              hud: '#0f0f18',
+              card: '#151522',
+              cardHover: '#1c1c2e',
+              border: '#2a2a40',
+              borderGlow: '#00ffaa',
+            }
+          },
+          animation: {
+            'glow-pulse': 'glowPulse 3s ease-in-out infinite',
+            'radar-sweep': 'radarSweep 4s linear infinite',
+            'float': 'float 4s ease-in-out infinite',
+            'scanline': 'scanline 8s linear infinite',
+          },
+          keyframes: {
+            glowPulse: {
+              '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+              '50%': { opacity: '0.9', transform: 'scale(1.08)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-6px)' },
+            },
+            scanline: {
+              '0%': { transform: 'translateY(-100%)' },
+              '100%': { transform: 'translateY(1000%)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons & Confetti Library for Mini-Game Victory -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #08080c;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2a2a40;
+      border-radius: 4px;
+      border: 2px solid #08080c;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #10b981;
+    }
+
+    /* Pixelated borders & Cyberpunk Arcade Styling */
+    .arcade-box {
+      background: #151522;
+      border: 2px solid #2a2a40;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+      transition: all 0.25s ease;
+    }
+    .arcade-box:hover {
+      border-color: #10b981;
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.25);
+    }
+
+    .pixel-button {
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      box-shadow: 0 4px 0 #065f46;
+    }
+    .pixel-button:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #065f46;
+    }
+
+    /* Cyber grid pattern */
+    .bg-cyber-grid {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(16, 185, 129, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(16, 185, 129, 0.04) 1px, transparent 1px);
+    }
+
+    /* CRT scanline simulation */
+    .crt-overlay {
+      background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.25) 50%
+      ), linear-gradient(
+        90deg,
+        rgba(255, 0, 0, 0.03),
+        rgba(0, 255, 0, 0.01),
+        rgba(0, 0, 255, 0.03)
+      );
+      background-size: 100% 3px, 6px 100%;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="bg-game-bg text-zinc-100 font-sans antialiased selection:bg-neon-green/30 selection:text-emerald-300 relative min-h-screen">
+
+  <!-- Scanline subtle CRT effect -->
+  <div class="fixed inset-0 crt-overlay z-50 pointer-events-none opacity-40"></div>
+
+  <!-- Background Ambient Glows -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="absolute -top-40 -left-40 w-[500px] h-[500px] bg-emerald-500/15 rounded-full blur-[160px] animate-glow-pulse"></div>
+    <div class="absolute top-1/2 -right-40 w-[500px] h-[500px] bg-purple-600/15 rounded-full blur-[170px] animate-glow-pulse" style="animation-delay: 2s;"></div>
+    <div class="absolute -bottom-40 left-1/3 w-[500px] h-[500px] bg-cyan-500/15 rounded-full blur-[160px] animate-glow-pulse" style="animation-delay: 1s;"></div>
+  </div>
+
+  <div class="relative z-10 bg-cyber-grid">
+
+    <!-- TOP HUD & STATS BAR (GAME INTERFACE) -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-game-hud/90 border-b-2 border-game-border shadow-lg">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        
+        <!-- Player Level Badge -->
+        <a href="#hero" class="flex items-center gap-3 group">
+          <div class="w-9 h-9 rounded-lg bg-emerald-500 text-black font-pixel font-bold flex items-center justify-center text-xs shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
+            P1
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-pixel text-xs text-white tracking-wide group-hover:text-emerald-400 transition-colors">EDWARD DANIEL</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-emerald-950/80 border border-emerald-500/50 text-emerald-400 font-bold">LV.21</span>
+            </div>
+            <p class="text-[10px] font-mono text-zinc-400 hidden sm:block">CLASS: FULL-STACK DEVELOPER</p>
+          </div>
+        </a>
+
+        <!-- Interactive HP / XP Status Bar -->
+        <div class="hidden lg:flex items-center gap-6 text-xs font-mono">
+          <!-- HP Bar -->
+          <div class="space-y-1">
+            <div class="flex justify-between text-[10px] text-zinc-400">
+              <span class="text-rose-400 font-bold">HP (ENERGY)</span>
+              <span>100 / 100</span>
+            </div>
+            <div class="w-28 h-2 bg-zinc-800 rounded-full overflow-hidden border border-zinc-700">
+              <div class="w-full h-full bg-gradient-to-r from-rose-500 to-rose-400"></div>
+            </div>
+          </div>
+          <!-- XP Bar -->
+          <div class="space-y-1">
+            <div class="flex justify-between text-[10px] text-zinc-400">
+              <span class="text-emerald-400 font-bold">XP (EXPERIENCE)</span>
+              <span>9,990 / 10,000</span>
+            </div>
+            <div class="w-32 h-2 bg-zinc-800 rounded-full overflow-hidden border border-zinc-700">
+              <div class="w-[98%] h-full bg-gradient-to-r from-emerald-500 to-cyan-400 animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation & Sound Control -->
+        <div class="flex items-center gap-3">
+          
+          <!-- Sound Toggle Button -->
+          <button id="soundToggleBtn" onclick="toggleSound()" 
+                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-game-card hover:bg-game-cardHover border border-game-border text-xs font-mono text-zinc-300 hover:text-emerald-400 transition-all">
+            <i data-lucide="volume-2" id="soundIcon" class="w-4 h-4 text-emerald-400"></i>
+            <span id="soundLabel" class="hidden sm:inline">SFX: ON</span>
+          </button>
+
+          <!-- Social CTAs -->
+          <a href="https://github.com/edelnino" target="_blank" rel="noopener noreferrer" 
+             class="p-2 rounded-lg bg-game-card hover:bg-game-border border border-game-border text-zinc-300 hover:text-white transition-all hover:scale-105"
+             title="GitHub Profile">
+            <i data-lucide="github" class="w-4 h-4"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/edwarddaniel1210" target="_blank" rel="noopener noreferrer" 
+             class="p-2 rounded-lg bg-game-card hover:bg-game-border border border-game-border text-zinc-300 hover:text-white transition-all hover:scale-105"
+             title="LinkedIn Profile">
+            <i data-lucide="linkedin" class="w-4 h-4"></i>
+          </a>
+
+          <!-- Play Arcade Shortcut -->
+          <a href="#arcade-zone" onclick="playBeep(580, 'square', 0.1)"
+             class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-pixel text-[11px] font-bold shadow-md shadow-emerald-500/30 transition-all hover:scale-105">
+            <i data-lucide="gamepad-2" class="w-3.5 h-3.5"></i>
+            <span>PLAY GAME</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 pt-10 pb-28 space-y-28">
+
+      <!-- ========================================================
+           HERO: Character Select / Player 1 Profile
+           ======================================================== -->
+      <section id="hero" class="pt-4 sm:pt-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          
+          <!-- Left: Hero Text & Quest Status (7 Cols) -->
+          <div class="lg:col-span-7 space-y-6">
+            
+            <!-- Quest Indicator Badge -->
+            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-emerald-950/60 border-2 border-emerald-500/40 text-emerald-400 font-pixel text-[11px]">
+              <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
+              </span>
+              <span>ACTIVE QUEST: SEEKING INTERNSHIP 2026</span>
+            </div>
+
+            <!-- Main Headline -->
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+              Leveling Up Digital Products with <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Code, UI/UX, & AI.</span>
+            </h1>
+
+            <!-- Subheadline -->
+            <p class="text-base sm:text-lg text-zinc-300 leading-relaxed font-normal">
+              Halo! Saya <span class="text-white font-bold">Edward Daniel</span> — Player 1 di dunia rekayasa perangkat lunak. Saya merancang dan mengoding sistem nyata: dari platform e-commerce logistik bahan bangunan, dashboard finansial UMKM, hingga prototipe mobile app berfokus pada nutrisi.
+            </p>
+
+            <!-- Player Attributes / Stats Radar -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1 text-xs font-mono">
+              <div class="p-2.5 rounded-lg bg-game-card border border-game-border">
+                <span class="text-[10px] text-zinc-500 block">ROLE</span>
+                <span class="text-emerald-400 font-bold">Full-Stack Dev</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-game-card border border-game-border">
+                <span class="text-[10px] text-zinc-500 block">MANA POOL</span>
+                <span class="text-cyan-400 font-bold">Web & Mobile</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-game-card border border-game-border">
+                <span class="text-[10px] text-zinc-500 block">BUFF</span>
+                <span class="text-purple-400 font-bold">AI Integration</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-game-card border border-game-border">
+                <span class="text-[10px] text-zinc-500 block">SPEC</span>
+                <span class="text-amber-400 font-bold">UI/UX Sense</span>
+              </div>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-wrap items-center gap-3.5 pt-2">
+              <a href="#projects" onclick="playBeep(440, 'square', 0.08)"
+                 class="pixel-button inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-sm">
+                <i data-lucide="sword" class="w-4 h-4"></i>
+                <span>Lihat Misi Proyek</span>
+              </a>
+
+              <a href="#arcade-zone" onclick="playBeep(620, 'square', 0.1)"
+                 class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm shadow-lg shadow-purple-600/30 transition-all hover:scale-105">
+                <i data-lucide="gamepad-2" class="w-4 h-4"></i>
+                <span>Mainkan Game vs AI</span>
+              </a>
+
+              <a href="https://www.linkedin.com/in/edwarddaniel1210" target="_blank" rel="noopener noreferrer" 
+                 class="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-game-card hover:bg-game-border border border-game-border text-zinc-200 text-sm font-semibold transition-all">
+                <i data-lucide="linkedin" class="w-4 h-4 text-cyan-400"></i>
+                <span>LinkedIn</span>
+              </a>
+            </div>
+
+          </div>
+
+          <!-- Right: Character Card Hologram Frame (5 Cols) -->
+          <div class="lg:col-span-5 flex justify-center">
+            <div class="relative w-full max-w-sm">
+              
+              <!-- Cyberpunk Neon Border Glow -->
+              <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-purple-600 blur-xl opacity-50 animate-glow-pulse"></div>
+              
+              <!-- Character Frame -->
+              <div class="relative rounded-2xl bg-game-card border-2 border-emerald-500/60 overflow-hidden shadow-2xl">
+                
+                <!-- Retro Game Header Bar -->
+                <div class="px-4 py-2.5 bg-game-hud border-b-2 border-game-border flex items-center justify-between font-pixel text-[10px]">
+                  <span class="text-emerald-400 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    PLAYER_01.EXE
+                  </span>
+                  <span class="text-zinc-500">READY</span>
+                </div>
+
+                <!-- Portrait Container -->
+                <div class="relative aspect-[4/5] bg-zinc-950 overflow-hidden group">
+                  <img src="assets/profile.jpg" alt="Edward Daniel - Player Portrait" 
+                       class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                  
+                  <!-- Gradient Vignette -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-game-card via-transparent to-transparent"></div>
+                  
+                  <!-- Stat Overlay inside Photo -->
+                  <div class="absolute bottom-3 left-3 right-3 p-3 rounded-xl bg-game-hud/90 backdrop-blur-md border border-game-border flex items-center justify-between">
+                    <div>
+                      <h4 class="font-pixel text-[11px] text-white">EDWARD DANIEL</h4>
+                      <p class="text-[11px] font-mono text-zinc-400">Class: Software Intern</p>
+                    </div>
+                    <div class="text-right font-mono text-[11px]">
+                      <span class="text-emerald-400 font-bold block">100% READY</span>
+                      <span class="text-zinc-500 text-[10px]">CO-OP READY</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Bottom Skill Bars -->
+                <div class="p-3.5 bg-game-hud space-y-2 text-[11px] font-mono">
+                  <div>
+                    <div class="flex justify-between text-zinc-400 mb-0.5">
+                      <span>Frontend & UI/UX</span>
+                      <span class="text-emerald-400">92%</span>
+                    </div>
+                    <div class="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                      <div class="h-full bg-emerald-400 w-[92%]"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between text-zinc-400 mb-0.5">
+                      <span>Backend & Database</span>
+                      <span class="text-cyan-400">88%</span>
+                    </div>
+                    <div class="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                      <div class="h-full bg-cyan-400 w-[88%]"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between text-zinc-400 mb-0.5">
+                      <span>Problem Solving & AI</span>
+                      <span class="text-purple-400">95%</span>
+                    </div>
+                    <div class="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                      <div class="h-full bg-purple-400 w-[95%]"></div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========================================================
+           THE ARCADE ZONE: PLAYABLE RETRO MINI-GAME (TIC-TAC-TOE VS AI)
+           ======================================================== -->
+      <section id="arcade-zone" class="scroll-mt-24">
+        
+        <div class="arcade-box rounded-3xl p-6 sm:p-10 border-2 border-emerald-500/50 relative overflow-hidden bg-gradient-to-b from-game-card to-game-hud">
+          
+          <!-- Arcade Cabinet Header -->
+          <div class="text-center max-w-xl mx-auto space-y-2 mb-8">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/80 border border-purple-500/40 text-purple-400 font-pixel text-[11px]">
+              <i data-lucide="gamepad-2" class="w-3.5 h-3.5"></i>
+              <span>INTERACTIVE ARCADE LOUNGE</span>
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Tantang <span class="text-emerald-400">Edward AI Bot</span> di Tic-Tac-Toe!
+            </h2>
+            <p class="text-xs sm:text-sm text-zinc-400 font-mono">
+              Mainkan game sederhana ini di dalam portofolio. Menangkan permainan untuk membuka kartu ucapan selamat khusus!
+            </p>
+          </div>
+
+          <!-- Game Board Container -->
+          <div class="max-w-md mx-auto bg-zinc-950/90 rounded-2xl p-6 border-2 border-game-border shadow-2xl relative">
+            
+            <!-- Game Status & Scoreboard -->
+            <div class="grid grid-cols-3 gap-2 text-center font-mono text-xs mb-5 p-2 rounded-xl bg-game-hud border border-game-border">
+              <div class="p-1">
+                <span class="text-emerald-400 font-bold block">KAMU (X)</span>
+                <span id="playerScore" class="text-lg font-pixel text-white">0</span>
+              </div>
+              <div class="p-1 border-x border-game-border">
+                <span class="text-zinc-500 font-bold block">SERI</span>
+                <span id="tieScore" class="text-lg font-pixel text-zinc-300">0</span>
+              </div>
+              <div class="p-1">
+                <span class="text-purple-400 font-bold block">AI BOT (O)</span>
+                <span id="aiScore" class="text-lg font-pixel text-white">0</span>
+              </div>
+            </div>
+
+            <!-- Current Turn / Status Message -->
+            <div id="gameStatus" class="text-center font-pixel text-xs text-emerald-400 mb-4 tracking-wide h-6">
+              GILIRAN KAMU: KLIK KOTAK!
+            </div>
+
+            <!-- 3x3 Grid -->
+            <div class="grid grid-cols-3 gap-3 aspect-square max-w-[280px] sm:max-w-[300px] mx-auto">
+              <button onclick="makeMove(0)" class="game-cell aspect-square rounded-xl bg-game-card hover:bg-zinc-800 border-2 border-game-border text-3xl font-pixel font-bold flex items-center justify-center transition-all hover:scale-95 disabled:opacity-90"></button>
+              <button onclick="makeMove(1)" class="game-cell aspect-square rounded-xl bg-game-card hover:bg-zinc-800 border-2 border-game-border text-3xl font-pixel font-bold flex items-center justify-center transition-all hover:scale-95 disabled:opacity-90"></button>
+              <button onclick="makeMove(2)" class="game-cell aspect-square rounded-xl bg-game-card hover:bg-zinc-800 border-2 border-game-border text-3xl font-pixel font-bold flex items-center justify-center transition-all hover:scale-95 disabled:opacity-90"></button>
+              <button onclick="makeMove(3)" class="game-cell aspect-square rounded-xl bg-game-card hover:bg-zinc-800 border-2 border-game-border text-3xl font-pixel font-bold flex items-center justify-center transition-all hover:scale-95 disabled:opacity-90"></button>
+              <button onclick="makeMove(4)" class="game-cell aspect-square rounded-xl bg-game-card hover:bg-zinc-800 border-2 border-game-border text-3xl font-pixel font-bold flex items-center justify-center transition-all hover:scale-95 disabled:opacity-90"></button>
+              <button onclick="makeMove(5)" class="game-cell aspect-square rounded-xl bg-game-card hover:bg-zinc-800 border-2 border-game-border text-3xl font-pixel font-bold flex items-center justify-center transition-all hover:scale-95 disabled:opacity-90"></button>
+              <button onclick="makeMove(6)" class="game-cell aspect-square rounded-xl bg-game-card hover:bg-zinc-800 border-2 border-game-border text-3xl font-pixel font-bold flex items-center justify-center transition-all hover:scale-95 disabled:opacity-90"></button>
+              <button onclick="makeMove(7)" class="game-cell aspect-square rounded-xl bg-game-card hover:bg-zinc-800 border-2 border-game-border text-3xl font-pixel font-bold flex items-center justify-center transition-all hover:scale-95 disabled:opacity-90"></button>
+              <button onclick="makeMove(8)" class="game-cell aspect-square rounded-xl bg-game-card hover:bg-zinc-800 border-2 border-game-border text-3xl font-pixel font-bold flex items-center justify-center transition-all hover:scale-95 disabled:opacity-90"></button>
+            </div>
+
+            <!-- Reset / Play Again Button -->
+            <div class="mt-6 flex justify-center">
+              <button onclick="resetGame()" 
+                      class="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-game-border text-xs font-mono text-zinc-300 hover:text-white flex items-center gap-2 transition-colors">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                <span>Reset Papan Game</span>
+              </button>
+            </div>
+
+            <!-- Secret Reward Popup when user wins -->
+            <div id="winBanner" class="hidden mt-4 p-3 rounded-xl bg-emerald-950/90 border border-emerald-500 text-center space-y-1 animate-bounce">
+              <p class="font-pixel text-xs text-emerald-400">🏆 ACHIEVEMENT UNLOCKED: TACTICAL MASTER!</p>
+              <p class="text-[11px] font-mono text-zinc-300">Hebat! Mari mengobrol lebih lanjut via LinkedIn / Email untuk peluang magang!</p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ========================================================
+           QUEST LOG: COMPLETED PROJECTS & CASE STUDIES
+           ======================================================== -->
+      <section id="projects" class="space-y-16">
+        
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-game-border pb-6">
+          <div>
+            <div class="text-xs font-pixel text-emerald-400 tracking-wider uppercase mb-1">QUEST ARCHIVE</div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Misi Proyek yang Telah Diselesaikan</h2>
+          </div>
+          <p class="text-xs font-mono text-zinc-400 max-w-sm">
+            Setiap proyek adalah bukti pemecahan masalah riil dengan alur kode dan desain teruji.
+          </p>
+        </div>
+
+        <!-- QUEST 1: SINAR ABADI (BOSS MISSION) -->
+        <div class="arcade-box rounded-3xl p-6 sm:p-8 space-y-8">
+          
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded text-[10px] font-pixel bg-amber-500/10 text-amber-400 border border-amber-500/30">BOSS QUEST</span>
+                <span class="text-xs font-mono text-zinc-400">Web • Mobile • Artificial Intelligence</span>
+              </div>
+              <h3 class="text-2xl font-bold text-white">Sinar Abadi — Toko Bangunan & Logistik Cerdas AI</h3>
+            </div>
+            
+            <div class="flex items-center gap-2.5">
+              <a href="https://github.com/Calvin3C/web--sinar-abadi.git" target="_blank" rel="noopener noreferrer" 
+                 class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-game-border text-xs font-mono text-zinc-200 transition-colors">
+                <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                <span>Repo Web</span>
+              </a>
+              <a href="https://github.com/Calvin3C/mobile-sinar-abadi-PPT.git" target="_blank" rel="noopener noreferrer" 
+                 class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-game-border text-xs font-mono text-zinc-200 transition-colors">
+                <i data-lucide="smartphone" class="w-3.5 h-3.5"></i>
+                <span>Repo Mobile</span>
+              </a>
+            </div>
+          </div>
+
+          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">
+            Menyelesaikan tantangan logistik material berat dan kalkulasi biaya kirim toko bahan bangunan. Dilengkapi katalog belanja lengkap, integrasi multi-kurir (JNE Trucking, SiCepat, J&T), serta pemanfaatan <strong class="text-emerald-400">Artificial Intelligence</strong> untuk rekomendasi material bangunan cerdas.
+          </p>
+
+          <!-- Screenshots Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            <div class="group relative rounded-xl bg-zinc-900 border border-game-border overflow-hidden cursor-pointer" onclick="openLightbox('assets/sinar-abadi-home.jpg', 'Sinar Abadi - Katalog Kategori Material')">
+              <div class="px-3 py-2 bg-game-hud border-b border-game-border flex items-center justify-between text-[11px] text-zinc-400 font-mono">
+                <span>01. Katalog Material</span>
+                <i data-lucide="zoom-in" class="w-3.5 h-3.5 opacity-60 group-hover:opacity-100"></i>
+              </div>
+              <div class="aspect-[16/10] overflow-hidden">
+                <img src="assets/sinar-abadi-home.jpg" alt="Sinar Abadi Katalog" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+            </div>
+
+            <div class="group relative rounded-xl bg-zinc-900 border border-game-border overflow-hidden cursor-pointer" onclick="openLightbox('assets/sinar-abadi-cart.png', 'Sinar Abadi - Keranjang Belanja')">
+              <div class="px-3 py-2 bg-game-hud border-b border-game-border flex items-center justify-between text-[11px] text-zinc-400 font-mono">
+                <span>02. Keranjang Belanja</span>
+                <i data-lucide="zoom-in" class="w-3.5 h-3.5 opacity-60 group-hover:opacity-100"></i>
+              </div>
+              <div class="aspect-[16/10] overflow-hidden">
+                <img src="assets/sinar-abadi-cart.png" alt="Sinar Abadi Cart" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+            </div>
+
+            <div class="group relative rounded-xl bg-zinc-900 border border-game-border overflow-hidden cursor-pointer" onclick="openLightbox('assets/sinar-abadi-checkout.png', 'Sinar Abadi - Checkout Multi-Kurir')">
+              <div class="px-3 py-2 bg-game-hud border-b border-game-border flex items-center justify-between text-[11px] text-zinc-400 font-mono">
+                <span>03. Multi-Kurir (JNE Trucking, SiCepat, J&T)</span>
+                <i data-lucide="zoom-in" class="w-3.5 h-3.5 opacity-60 group-hover:opacity-100"></i>
+              </div>
+              <div class="aspect-[16/10] overflow-hidden">
+                <img src="assets/sinar-abadi-checkout.png" alt="Sinar Abadi Checkout" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Feature Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs font-mono">
+            <div class="p-3 rounded-xl bg-game-hud border border-game-border">
+              <span class="text-emerald-400 font-bold block mb-1">🚚 Multi-Kurir Logistik</span>
+              <span class="text-zinc-400">Pilihan trucking untuk muatan berat semen & besi beton.</span>
+            </div>
+            <div class="p-3 rounded-xl bg-game-hud border border-game-border">
+              <span class="text-cyan-400 font-bold block mb-1">🤖 AI-Assisted Recommendation</span>
+              <span class="text-zinc-400">Pencarian material pintar dan estimasi kebutuhan bangunan.</span>
+            </div>
+            <div class="p-3 rounded-xl bg-game-hud border border-game-border">
+              <span class="text-purple-400 font-bold block mb-1">🛡️ Automated Tax & Secure</span>
+              <span class="text-zinc-400">Kalkulasi otomatis PPN 11% dan alur pembayaran terverifikasi.</span>
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- QUEST 2: DE BOUQUETS -->
+        <div class="arcade-box rounded-3xl p-6 sm:p-8 space-y-8">
+          
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded text-[10px] font-pixel bg-rose-500/10 text-rose-400 border border-rose-500/30">FINANCE QUEST</span>
+                <span class="text-xs font-mono text-zinc-400">Web App E-Commerce</span>
+              </div>
+              <h3 class="text-2xl font-bold text-white">De Bouquets — Florist Platform & Modul Rekap Finansial</h3>
+            </div>
+            
+            <a href="https://github.com/Arthursakaa/Web_Debouquets" target="_blank" rel="noopener noreferrer" 
+               class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-game-border text-xs font-mono text-zinc-200 transition-colors">
+              <i data-lucide="github" class="w-3.5 h-3.5"></i>
+              <span>GitHub Repository</span>
+            </a>
+          </div>
+
+          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">
+            Menyediakan platform pemesanan bunga online dengan senjata rahasia: <strong class="text-emerald-400">Modul Operasional Admin khusus bagi pemilik usaha</strong> untuk mencatat total pendapatan riil, memantau riwayat pesanan, dan memvalidasi bukti transfer pelanggan tanpa tercecer.
+          </p>
+
+          <!-- Screenshots -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            <div class="group relative rounded-xl bg-zinc-900 border border-game-border overflow-hidden cursor-pointer" onclick="openLightbox('assets/debouquets-hero.jpg', 'De Bouquets - Beranda & Branding Florist')">
+              <div class="px-3 py-2 bg-game-hud border-b border-game-border flex items-center justify-between text-[11px] text-zinc-400 font-mono">
+                <span>01. Beranda Florist</span>
+                <i data-lucide="zoom-in" class="w-3.5 h-3.5 opacity-60 group-hover:opacity-100"></i>
+              </div>
+              <div class="aspect-[16/10] overflow-hidden">
+                <img src="assets/debouquets-hero.jpg" alt="De Bouquets Landing" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+            </div>
+
+            <div class="group relative rounded-xl bg-zinc-900 border border-game-border overflow-hidden cursor-pointer" onclick="openLightbox('assets/debouquets-cart.png', 'De Bouquets - Keranjang Belanja')">
+              <div class="px-3 py-2 bg-game-hud border-b border-game-border flex items-center justify-between text-[11px] text-zinc-400 font-mono">
+                <span>02. Keranjang Belanja</span>
+                <i data-lucide="zoom-in" class="w-3.5 h-3.5 opacity-60 group-hover:opacity-100"></i>
+              </div>
+              <div class="aspect-[16/10] overflow-hidden">
+                <img src="assets/debouquets-cart.png" alt="De Bouquets Cart" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+            </div>
+
+            <div class="group relative rounded-xl bg-zinc-900 border-2 border-emerald-500/50 overflow-hidden cursor-pointer shadow-lg shadow-emerald-500/10" onclick="openLightbox('assets/debouquets-admin.png', 'De Bouquets - Panel Admin & Rekap Pendapatan')">
+              <div class="px-3 py-2 bg-emerald-950/40 border-b border-emerald-500/30 flex items-center justify-between text-[11px] text-emerald-400 font-mono">
+                <span>03. Dashboard Rekap Finansial Admin</span>
+                <i data-lucide="zoom-in" class="w-3.5 h-3.5 opacity-60 group-hover:opacity-100"></i>
+              </div>
+              <div class="aspect-[16/10] overflow-hidden">
+                <img src="assets/debouquets-admin.png" alt="De Bouquets Admin Dashboard" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+            </div>
+
+          </div>
+
+          <div class="p-4 rounded-xl bg-game-hud border border-game-border text-xs font-mono text-zinc-300 flex items-center gap-3">
+            <i data-lucide="coins" class="w-5 h-5 text-amber-400 shrink-0"></i>
+            <div>
+              <strong class="text-white font-bold block">Business Proof: Total Pendapatan Rp 2.220.000+</strong>
+              Sistem mencatat transaksi secara otomatis (seperti ID pesanan ORD-260525-122 milik Edward), mencegah manipulasi data kasir UMKM.
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- QUEST 3: TAKARASA (MOBILE PRODUCT DESIGN) -->
+        <div class="arcade-box rounded-3xl p-6 sm:p-8 space-y-8">
+          
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded text-[10px] font-pixel bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">MOBILE UX QUEST</span>
+                <span class="text-xs font-mono text-zinc-400">UI/UX & Interactive Prototyping</span>
+              </div>
+              <h3 class="text-2xl font-bold text-white">Takarasa — Food Delivery Apps dengan Takaran Nutrisi Terukur</h3>
+            </div>
+            
+            <a href="https://www.figma.com/proto/MP3BrHioTT8CjabdVrLZXw/Food-Delivery?node-id=5-681&starting-point-node-id=10%3A768&t=0UaXJDrGcqWlWH1X-1" target="_blank" rel="noopener noreferrer" 
+               class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-xs transition-all shadow-md shadow-emerald-500/20">
+              <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+              <span>Buka Prototipe Figma ↗</span>
+            </a>
+          </div>
+
+          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">
+            Aplikasi pengantaran makanan sehat yang dirancang khusus untuk pengguna dengan target gizi harian. Dilengkapi sistem pencarian makanan sehat, pelacakan estimasi pengantaran kurir berbasis peta (<em class="text-zinc-200">real-time delivery status stepper</em>), serta sistem ulasan makanan.
+          </p>
+
+          <!-- 3 Smartphone Frame Mockups -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto pt-2">
+            
+            <div class="relative group cursor-pointer" onclick="openLightbox('assets/takarasa-home.jpg', 'Takarasa - Beranda & Kategori Makanan')">
+              <div class="rounded-[2.5rem] p-2 bg-gradient-to-b from-zinc-700 via-zinc-800 to-zinc-900 shadow-2xl border-2 border-zinc-700 group-hover:border-emerald-500 transition-colors">
+                <div class="rounded-[2.2rem] overflow-hidden bg-black aspect-[9/19] relative">
+                  <img src="assets/takarasa-home.jpg" alt="Takarasa Beranda" class="w-full h-full object-cover">
+                </div>
+              </div>
+              <p class="text-center text-xs font-mono text-zinc-400 mt-3">01. Beranda & Promo Ongkir</p>
+            </div>
+
+            <div class="relative group cursor-pointer" onclick="openLightbox('assets/takarasa-tracking.jpg', 'Takarasa - Live Tracking Driver Kasmojo (25-35 Menit)')">
+              <div class="rounded-[2.5rem] p-2 bg-gradient-to-b from-zinc-700 via-zinc-800 to-zinc-900 shadow-2xl border-2 border-zinc-700 group-hover:border-emerald-500 transition-colors">
+                <div class="rounded-[2.2rem] overflow-hidden bg-black aspect-[9/19] relative">
+                  <img src="assets/takarasa-tracking.jpg" alt="Takarasa Tracking" class="w-full h-full object-cover">
+                </div>
+              </div>
+              <p class="text-center text-xs font-mono text-zinc-400 mt-3">02. Live Tracking Driver Kasmojo</p>
+            </div>
+
+            <div class="relative group cursor-pointer" onclick="openLightbox('assets/takarasa-orders.png', 'Takarasa - Riwayat Pesanan & Rating')">
+              <div class="rounded-[2.5rem] p-2 bg-gradient-to-b from-zinc-700 via-zinc-800 to-zinc-900 shadow-2xl border-2 border-zinc-700 group-hover:border-emerald-500 transition-colors">
+                <div class="rounded-[2.2rem] overflow-hidden bg-black aspect-[9/19] relative">
+                  <img src="assets/takarasa-orders.png" alt="Takarasa Riwayat" class="w-full h-full object-cover">
+                </div>
+              </div>
+              <p class="text-center text-xs font-mono text-zinc-400 mt-3">03. Riwayat Pesanan & Rating</p>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- QUEST 4: CANOPY MEMBRANE -->
+        <div class="arcade-box rounded-3xl p-6 sm:p-8">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+            
+            <div class="md:col-span-8 space-y-3">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded text-[10px] font-pixel bg-purple-500/10 text-purple-400 border border-purple-500/30">SIDE QUEST</span>
+                <span class="text-xs font-mono text-zinc-400">B2B Company Profile</span>
+              </div>
+              <h3 class="text-2xl font-bold text-white">CanopyMembrane — Profil Perusahaan Konstruksi Modern</h3>
+              <p class="text-zinc-300 text-sm leading-relaxed">
+                Website profil perusahaan kanopi kain dan membrane modern yang dirancang untuk meningkatkan kredibilitas merek, memamerkan katalog instalasi proyek sebelumnya, serta menyediakan tombol aksi cepat untuk konsultasi penawaran harga klien B2B.
+              </p>
+              
+              <div class="flex flex-wrap gap-2 text-xs font-mono text-zinc-400 pt-1">
+                <span class="px-2.5 py-1 rounded bg-game-hud border border-game-border">Responsive Layout</span>
+                <span class="px-2.5 py-1 rounded bg-game-hud border border-game-border">High Performance</span>
+                <span class="px-2.5 py-1 rounded bg-game-hud border border-game-border">Lead Generation CTA</span>
+              </div>
+            </div>
+
+            <div class="md:col-span-4 flex justify-center">
+              <div class="p-5 rounded-2xl bg-game-hud border border-game-border text-center space-y-2 w-full">
+                <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center mx-auto mb-2">
+                  <i data-lucide="layout" class="w-6 h-6"></i>
+                </div>
+                <h4 class="text-sm font-bold text-white">Fast & Lightweight</h4>
+                <p class="text-xs text-zinc-400 font-mono">Optimal di desktop dan mobile untuk konversi klien B2B.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================================
+           SKILL TREE & INVENTORY
+           ======================================================== -->
+      <section id="skills" class="space-y-8">
+        
+        <div class="border-b-2 border-game-border pb-6">
+          <div class="text-xs font-pixel text-emerald-400 tracking-wider uppercase mb-1">SKILL TREE & INVENTORY</div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Senjata & Keahlian Teknis</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          
+          <div class="arcade-box p-5 rounded-2xl space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+                <i data-lucide="code" class="w-5 h-5"></i>
+              </div>
+              <h3 class="font-bold text-white text-sm">Frontend Blade</h3>
+            </div>
+            <ul class="space-y-2 text-xs font-mono text-zinc-300">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>HTML5 / Modern CSS3</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>JavaScript (ES6+)</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>Tailwind CSS & Animations</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>React / Next.js Basics</li>
+            </ul>
+          </div>
+
+          <div class="arcade-box p-5 rounded-2xl space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/30">
+                <i data-lucide="shield" class="w-5 h-5"></i>
+              </div>
+              <h3 class="font-bold text-white text-sm">Backend Shield</h3>
+            </div>
+            <ul class="space-y-2 text-xs font-mono text-zinc-300">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i>PHP / Laravel Framework</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i>MySQL Relational DB</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i>RESTful APIs</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i>Payment & Courier Logic</li>
+            </ul>
+          </div>
+
+          <div class="arcade-box p-5 rounded-2xl space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center border border-purple-500/30">
+                <i data-lucide="sparkles" class="w-5 h-5"></i>
+              </div>
+              <h3 class="font-bold text-white text-sm">Mobile & AI Orb</h3>
+            </div>
+            <ul class="space-y-2 text-xs font-mono text-zinc-300">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-purple-400"></i>Mobile Apps Development</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-purple-400"></i>Driver Live Tracking UX</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-purple-400"></i>AI Integration & Prompting</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-purple-400"></i>Smart Material Search</li>
+            </ul>
+          </div>
+
+          <div class="arcade-box p-5 rounded-2xl space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-rose-500/10 text-rose-400 flex items-center justify-center border border-rose-500/30">
+                <i data-lucide="wand-2" class="w-5 h-5"></i>
+              </div>
+              <h3 class="font-bold text-white text-sm">Design Wand</h3>
+            </div>
+            <ul class="space-y-2 text-xs font-mono text-zinc-300">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-rose-400"></i>Figma Design Systems</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-rose-400"></i>Interactive Prototyping</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-rose-400"></i>Git & GitHub Collaboration</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-rose-400"></i>User Journey Mapping</li>
+            </ul>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ========================================================
+           CO-OP INVITATION / CONTACT GUILD
+           ======================================================== -->
+      <section id="contact" class="arcade-box rounded-3xl p-8 sm:p-12 text-center space-y-6 relative overflow-hidden">
+        
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-pixel text-xs">
+          <i data-lucide="users" class="w-3.5 h-3.5"></i>
+          <span>CO-OP PARTY INVITATION</span>
+        </div>
+
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white max-w-xl mx-auto">
+          Undang Edward Daniel ke Tim / Guild Anda!
+        </h2>
+
+        <p class="text-zinc-300 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
+          Saya siap berkontribusi pada peran <strong class="text-emerald-400">Software Engineer / Frontend / Mobile Intern</strong>. Mari berdiskusi tentang bagaimana saya dapat membantu mencapai target tim Anda!
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+          
+          <a href="https://www.linkedin.com/in/edwarddaniel1210" target="_blank" rel="noopener noreferrer" 
+             onclick="playBeep(700, 'square', 0.1)"
+             class="pixel-button inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-sm">
+            <i data-lucide="linkedin" class="w-4 h-4"></i>
+            <span>Hubungi via LinkedIn</span>
+          </a>
+
+          <a href="https://github.com/edelnino" target="_blank" rel="noopener noreferrer" 
+             onclick="playBeep(520, 'square', 0.1)"
+             class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-game-card hover:bg-game-cardHover border-2 border-game-border text-white font-semibold text-sm transition-all">
+            <i data-lucide="github" class="w-4 h-4"></i>
+            <span>Kunjungi GitHub (@edelnino)</span>
+          </a>
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t-2 border-game-border py-8 text-center text-xs font-mono text-zinc-500">
+      <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p>© 2026 Edward Daniel. All rights reserved. • GAME ON</p>
+        <div class="flex items-center gap-4 text-zinc-400">
+          <a href="https://github.com/edelnino" target="_blank" class="hover:text-emerald-400 transition-colors">GitHub: @edelnino</a>
+          <span>•</span>
+          <a href="https://www.linkedin.com/in/edwarddaniel1210" target="_blank" class="hover:text-emerald-400 transition-colors">LinkedIn Profile</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- LIGHTBOX MODAL FOR SCREENSHOTS -->
+  <div id="lightboxModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4 sm:p-6 transition-opacity duration-300 opacity-0" onclick="closeLightbox()">
+    <div class="relative max-w-4xl w-full bg-game-card border-2 border-emerald-500/50 rounded-2xl overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+      <div class="px-4 py-3 bg-game-hud border-b border-game-border flex items-center justify-between">
+        <span id="lightboxCaption" class="text-xs font-mono text-emerald-400 font-semibold truncate pr-4">Image Preview</span>
+        <button onclick="closeLightbox()" class="text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-2 sm:p-4 max-h-[80vh] overflow-auto flex items-center justify-center bg-zinc-950">
+        <img id="lightboxImg" src="" alt="Enlarged screenshot" class="max-w-full max-h-[72vh] object-contain rounded-lg">
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT: SOUND ENGINE & TIC-TAC-TOE GAME LOGIC -->
+  <script>
+    // Lucide Icons
+    lucide.createIcons();
+
+    /* ========================================================
+       1. SYNTHESIZED 8-BIT RETRO SOUND ENGINE (WEB AUDIO API)
+       Zero external audio files required!
+       ======================================================== */
+    let soundEnabled = true;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      const icon = document.getElementById('soundIcon');
+      const label = document.getElementById('soundLabel');
+      if (soundEnabled) {
+        icon.setAttribute('data-lucide', 'volume-2');
+        label.textContent = 'SFX: ON';
+        playBeep(520, 'square', 0.1);
+      } else {
+        icon.setAttribute('data-lucide', 'volume-x');
+        label.textContent = 'SFX: OFF';
+      }
+      lucide.createIcons();
+    }
+
+    function playBeep(freq = 440, type = 'square', duration = 0.08) {
+      if (!soundEnabled) return;
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        // audio context blocked or unready
+      }
+    }
+
+    function playWinSound() {
+      if (!soundEnabled) return;
+      playBeep(440, 'triangle', 0.1);
+      setTimeout(() => playBeep(554.37, 'triangle', 0.1), 100);
+      setTimeout(() => playBeep(659.25, 'triangle', 0.1), 200);
+      setTimeout(() => playBeep(880, 'triangle', 0.3), 300);
+    }
+
+    function playLoseSound() {
+      if (!soundEnabled) return;
+      playBeep(350, 'sawtooth', 0.12);
+      setTimeout(() => playBeep(260, 'sawtooth', 0.2), 120);
+    }
+
+    /* ========================================================
+       2. TIC-TAC-TOE VS AI BOT ENGINE
+       ======================================================== */
+    let board = ["", "", "", "", "", "", "", "", ""];
+    let isGameOver = false;
+    let scores = { player: 0, tie: 0, ai: 0 };
+
+    const winPatterns = [
+      [0,1,2], [3,4,5], [6,7,8], // rows
+      [0,3,6], [1,4,7], [2,5,8], // cols
+      [0,4,8], [2,4,6]           // diags
+    ];
+
+    const cells = document.querySelectorAll('.game-cell');
+    const statusText = document.getElementById('gameStatus');
+    const winBanner = document.getElementById('winBanner');
+
+    function makeMove(index) {
+      if (board[index] !== "" || isGameOver) return;
+
+      initAudio();
+      // Player move
+      board[index] = "X";
+      cells[index].innerText = "X";
+      cells[index].classList.add('text-emerald-400');
+      playBeep(480, 'square', 0.08);
+
+      if (checkWin("X")) {
+        handleEndGame("player");
+        return;
+      }
+
+      if (isBoardFull()) {
+        handleEndGame("tie");
+        return;
+      }
+
+      // AI turn
+      statusText.innerText = "EDWARD AI SEDANG BERPIKIR...";
+      statusText.classList.remove('text-emerald-400');
+      statusText.classList.add('text-purple-400');
+      isGameOver = true; // temporarily disable clicks
+
+      setTimeout(() => {
+        aiTurn();
+        if (!checkWin("O") && !isBoardFull()) {
+          isGameOver = false;
+          statusText.innerText = "GILIRAN KAMU: KLIK KOTAK!";
+          statusText.classList.remove('text-purple-400');
+          statusText.classList.add('text-emerald-400');
+        }
+      }, 350);
+    }
+
+    function aiTurn() {
+      // 1. Try to win if possible
+      for (let i = 0; i < 9; i++) {
+        if (board[i] === "") {
+          board[i] = "O";
+          if (checkWin("O")) {
+            renderAiMove(i);
+            handleEndGame("ai");
+            return;
+          }
+          board[i] = "";
+        }
+      }
+
+      // 2. Block player's win
+      for (let i = 0; i < 9; i++) {
+        if (board[i] === "") {
+          board[i] = "X";
+          if (checkWin("X")) {
+            board[i] = "O";
+            renderAiMove(i);
+            if (isBoardFull()) handleEndGame("tie");
+            return;
+          }
+          board[i] = "";
+        }
+      }
+
+      // 3. Take center if free
+      if (board[4] === "") {
+        board[4] = "O";
+        renderAiMove(4);
+        if (isBoardFull()) handleEndGame("tie");
+        return;
+      }
+
+      // 4. Random available move
+      const emptyIndices = board.map((val, idx) => val === "" ? idx : null).filter(val => val !== null);
+      if (emptyIndices.length > 0) {
+        const randIndex = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+        board[randIndex] = "O";
+        renderAiMove(randIndex);
+        if (checkWin("O")) {
+          handleEndGame("ai");
+        } else if (isBoardFull()) {
+          handleEndGame("tie");
+        }
+      }
+    }
+
+    function renderAiMove(idx) {
+      cells[idx].innerText = "O";
+      cells[idx].classList.add('text-purple-400');
+      playBeep(320, 'square', 0.08);
+    }
+
+    function checkWin(player) {
+      return winPatterns.some(pattern => {
+        return pattern.every(index => board[index] === player);
+      });
+    }
+
+    function isBoardFull() {
+      return board.every(cell => cell !== "");
+    }
+
+    function handleEndGame(winner) {
+      isGameOver = true;
+      if (winner === "player") {
+        scores.player++;
+        document.getElementById('playerScore').innerText = scores.player;
+        statusText.innerText = "🎉 VICTORY! KAMU MENANG!";
+        statusText.classList.remove('text-purple-400');
+        statusText.classList.add('text-emerald-400');
+        winBanner.classList.remove('hidden');
+        playWinSound();
+        
+        // Confetti effect
+        try {
+          confetti({
+            particleCount: 80,
+            spread: 70,
+            origin: { y: 0.6 }
+          });
+        } catch(e) {}
+
+      } else if (winner === "ai") {
+        scores.ai++;
+        document.getElementById('aiScore').innerText = scores.ai;
+        statusText.innerText = "🤖 AI MENANG! COBA LAGI?";
+        statusText.classList.remove('text-emerald-400');
+        statusText.classList.add('text-rose-400');
+        playLoseSound();
+      } else {
+        scores.tie++;
+        document.getElementById('tieScore').innerText = scores.tie;
+        statusText.innerText = "⚔️ PERTANDINGAN SERI!";
+        statusText.classList.remove('text-emerald-400');
+        statusText.classList.add('text-amber-400');
+        playBeep(300, 'square', 0.1);
+      }
+    }
+
+    function resetGame() {
+      playBeep(400, 'square', 0.08);
+      board = ["", "", "", "", "", "", "", "", ""];
+      isGameOver = false;
+      cells.forEach(cell => {
+        cell.innerText = "";
+        cell.classList.remove('text-emerald-400', 'text-purple-400');
+      });
+      statusText.innerText = "GILIRAN KAMU: KLIK KOTAK!";
+      statusText.classList.remove('text-purple-400', 'text-rose-400', 'text-amber-400');
+      statusText.classList.add('text-emerald-400');
+      winBanner.classList.add('hidden');
+    }
+
+    /* ========================================================
+       3. LIGHTBOX MODAL FUNCTIONALITY
+       ======================================================== */
+    const modal = document.getElementById('lightboxModal');
+    const modalImg = document.getElementById('lightboxImg');
+    const modalCaption = document.getElementById('lightboxCaption');
+
+    function openLightbox(src, caption) {
+      playBeep(520, 'square', 0.06);
+      modalImg.src = src;
+      modalCaption.textContent = caption || 'Preview Screenshot';
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+      }, 20);
+    }
+
+    function closeLightbox() {
+      playBeep(380, 'square', 0.06);
+      modal.classList.add('opacity-0');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }, 300);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
+</body>
+</html>
